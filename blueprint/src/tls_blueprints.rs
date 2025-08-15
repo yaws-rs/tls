@@ -12,14 +12,14 @@ pub struct TlsPosition {
 }
 
 /// .
-pub enum TlsContext {
+pub enum TlsContext<'c> {
     /// .
-    Client(TlsClient),
+    Client(TlsClient<'c>),
     /// .
-    Server(TlsServer),
+    Server(TlsServer<'c>),
 }
 
-impl Orbit for TlsContext {
+impl<'c> Orbit for TlsContext<'c> {
     type Position = TlsPosition;
     type Error = TlsError;
     fn advance_with<B>(&mut self, _: &mut B, _: &mut [u8]) -> Result<Self::Position, Self::Error> {
@@ -27,26 +27,26 @@ impl Orbit for TlsContext {
     }
 }
 
-impl BluePrint<TlsContext> for TlsServer {
-    type Config = TlsServerConfig;
+impl<'c> BluePrint<TlsContext<'c>> for TlsServer<'c> {
+    type Config = TlsServerConfig<'c>;
     type Error = TlsError;    
     
-    fn with_defaults() -> Result<TlsContext, Self::Error> {
+    fn with_defaults() -> Result<TlsContext<'c>, Self::Error> {
         todo!()
     }
-    fn with_configuration(c: Self::Config) -> Result<TlsContext, Self::Error> {
-        Ok(TlsContext::Server(TlsServer::with_config(c)?))
+    fn with_configuration(c: Self::Config) -> Result<TlsContext<'c>, Self::Error> {
+        Ok(TlsContext::<'c>::Server(TlsServer::<'c>::with_config(c)?))
     }
 }
 
-impl BluePrint<TlsContext> for TlsClient {
-    type Config = TlsClientConfig;
+impl<'c> BluePrint<TlsContext<'c>> for TlsClient<'c> {
+    type Config = TlsClientConfig<'c>;
     type Error = TlsError;
 
-    fn with_defaults() -> Result<TlsContext, Self::Error> {
+    fn with_defaults() -> Result<TlsContext<'c>, Self::Error> {
         todo!()
     }
-    fn with_configuration(c: Self::Config) -> Result<TlsContext, Self::Error>{
-        Ok(TlsContext::Client(TlsClient::with_config(c)?))
+    fn with_configuration(c: Self::Config) -> Result<TlsContext<'c>, Self::Error>{
+        Ok(TlsContext::Client(TlsClient::<'c>::with_config(c)?))
     }    
 }

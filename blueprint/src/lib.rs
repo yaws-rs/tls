@@ -26,3 +26,14 @@ pub use tls_blueprints::*;
 
 mod tls_entities;
 pub use tls_entities::*;
+
+//-----------------------------------------------
+// Internal fix-ups
+//-----------------------------------------------
+// Gate with rustls use in future as it requres it.
+#[cfg(all(not(feature = "std"), not(test)))]
+extern crate alloc;
+#[cfg(all(not(feature = "std"), not(test)))]
+pub(crate) use alloc::sync::Arc;
+#[cfg(any(feature = "std", test))]
+pub(crate) use std::sync::Arc;

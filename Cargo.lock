@@ -194,6 +194,7 @@ version = "0.0.1"
 dependencies = [
  "blueprint",
  "rustls",
+ "rustls-pki-types",
 ]
 
 [[package]]
