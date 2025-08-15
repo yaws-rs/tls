@@ -1,0 +1,23 @@
+[package]
+name = "yaws-tls-blueprint"
+version = "0.0.1"
+edition = "2021"
+description = "yaws TLS blueprint"
+homepage = "https://github.com/yaws-rs/tls"
+keywords = ["io", "uring", "epoll", "async"]
+license = "Apache-2.0/MIT"
+readme = "README.md"
+repository = "https://github.com/yaws-rs/tls"
+categories = ["science"]
+
+[dependencies]
+blueprint = { path = "../../blueprint" }
+rustls = { version = "0.23", default-features = false }
+
+[features]
+default = []
+std = []
+
+[package.metadata.docs.rs]
+features = []
+

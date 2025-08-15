@@ -1,0 +1,4 @@
+[workspace]
+members = ["blueprint"]
+exclude = ["examples/*"]
+resolver = "2"
