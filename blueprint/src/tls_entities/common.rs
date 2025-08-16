@@ -6,21 +6,23 @@ use core::net::IpAddr;
 
 use rustls_pki_types::ServerName as RustlsServerName;
 
+/// .
 #[derive(Clone, Debug, PartialEq)]
-pub enum DnsName<'c> {
-    Valid(&'c str),
+pub enum TlsServerIdentifier {
+    /// .
+    DnsName(&'static str),
+    ///
+    IpAddr(IpAddr),
 }
 
-#[derive(Clone, Debug, PartialEq)]
-pub enum TlsServerIdentifier<'c> {
-    DnsName(DnsName<'c>),
-    IpAddress(IpAddr),    
-}
-
-
-impl TryFrom<TlsServerIdentifier<'_>> for RustlsServerName<'_> {
+impl TryFrom<TlsServerIdentifier> for RustlsServerName<'_> {
     type Error = TlsError;
-    fn try_from(_: TlsServerIdentifier<'_>) -> RustlsServerName<'_> {
-        todo!()
+    fn try_from(c: TlsServerIdentifier) -> Result<Self, Self::Error> {
+        match c {
+            TlsServerIdentifier::DnsName(s) => {
+                Ok(Self::DnsName(s.try_into().map_err(TlsError::RustlsDns)?))
+            }
+            TlsServerIdentifier::IpAddr(i) => todo!(), //
+        }
     }
 }

@@ -34,6 +34,6 @@ pub use tls_entities::*;
 #[cfg(all(not(feature = "std"), not(test)))]
 extern crate alloc;
 #[cfg(all(not(feature = "std"), not(test)))]
-pub(crate) use alloc::sync::Arc;
+pub(crate) use alloc::{sync::Arc, vec, vec::Vec};
 #[cfg(any(feature = "std", test))]
-pub(crate) use std::sync::Arc;
+pub(crate) use std::{sync::Arc, vec, vec::Vec};

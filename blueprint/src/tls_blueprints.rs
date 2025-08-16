@@ -1,25 +1,24 @@
 //! Yaws TLS Blueprint & Orbit
 
 use crate::TlsError;
-use blueprint::Orbit;
 use blueprint::BluePrint;
+use blueprint::Orbit;
 
-use crate::{TlsClientConfig, TlsServerConfig};
 use crate::{TlsClient, TlsServer};
+use crate::{TlsClientConfig, TlsServerConfig};
 
 /// .
-pub struct TlsPosition {
-}
+pub struct TlsPosition {}
 
 /// .
-pub enum TlsContext<'c> {
+pub enum TlsContext {
     /// .
-    Client(TlsClient<'c>),
+    Client(TlsClient),
     /// .
-    Server(TlsServer<'c>),
+    Server(TlsServer),
 }
 
-impl<'c> Orbit for TlsContext<'c> {
+impl Orbit for TlsContext {
     type Position = TlsPosition;
     type Error = TlsError;
     fn advance_with<B>(&mut self, _: &mut B, _: &mut [u8]) -> Result<Self::Position, Self::Error> {
@@ -27,26 +26,26 @@ impl<'c> Orbit for TlsContext<'c> {
     }
 }
 
-impl<'c> BluePrint<TlsContext<'c>> for TlsServer<'c> {
-    type Config = TlsServerConfig<'c>;
-    type Error = TlsError;    
-    
-    fn with_defaults() -> Result<TlsContext<'c>, Self::Error> {
+impl BluePrint<TlsContext> for TlsServer {
+    type Config = TlsServerConfig;
+    type Error = TlsError;
+
+    fn with_defaults() -> Result<TlsContext, Self::Error> {
         todo!()
     }
-    fn with_configuration(c: Self::Config) -> Result<TlsContext<'c>, Self::Error> {
-        Ok(TlsContext::<'c>::Server(TlsServer::<'c>::with_config(c)?))
+    fn with_configuration(c: Self::Config) -> Result<TlsContext, Self::Error> {
+        Ok(TlsContext::Server(TlsServer::with_config(c)?))
     }
 }
 
-impl<'c> BluePrint<TlsContext<'c>> for TlsClient<'c> {
-    type Config = TlsClientConfig<'c>;
+impl BluePrint<TlsContext> for TlsClient {
+    type Config = TlsClientConfig;
     type Error = TlsError;
 
-    fn with_defaults() -> Result<TlsContext<'c>, Self::Error> {
+    fn with_defaults() -> Result<TlsContext, Self::Error> {
         todo!()
     }
-    fn with_configuration(c: Self::Config) -> Result<TlsContext<'c>, Self::Error>{
-        Ok(TlsContext::Client(TlsClient::<'c>::with_config(c)?))
-    }    
+    fn with_configuration(c: Self::Config) -> Result<TlsContext, Self::Error> {
+        Ok(TlsContext::Client(TlsClient::with_config(c)?))
+    }
 }

@@ -14,10 +14,11 @@ categories = ["science"]
 blueprint = { path = "../../blueprint" }
 rustls = { version = "0.23", default-features = false }
 rustls-pki-types = { version = "1.12", default-features = false }
+rustls-rustcrypto = { version = "=0.0.2-alpha", default-features = false, features = ["alloc"] }
 
 [features]
 default = []
-std = []
+std = ["rustls/std", "rustls-rustcrypto/std"]
 
 [package.metadata.docs.rs]
 features = []
