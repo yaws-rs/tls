@@ -27,6 +27,9 @@ pub use tls_blueprints::*;
 mod tls_entities;
 pub use tls_entities::*;
 
+#[cfg(feature = "util")]
+pub mod util;
+
 //-----------------------------------------------
 // Internal fix-ups
 //-----------------------------------------------

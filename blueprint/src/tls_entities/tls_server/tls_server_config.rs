@@ -10,19 +10,50 @@ use crate::tls_entities::tls_server::RustlsServerConfig;
 
 use crate::FakeTime;
 
+#[cfg(feature = "std")]
+use std::path::Path;
+
 ///
 #[derive(Debug)]
 pub struct TlsServerConfig {
-    server_identifier: TlsServerIdentifier,
     rustls_cert_chain: Vec<CertificateDer<'static>>,
     // TODO: don't stick to this being here. just testing for now.
     rustls_key_der: PrivateKeyDer<'static>,
 }
 
+impl TlsServerConfig {
+    /// Construct new with cert chain and key
+    // TODO: generalise cert & key instead of exposing rustls types here
+    pub fn with_certs_and_key(
+        chain: Vec<CertificateDer<'static>>,
+        rustls_key_der: PrivateKeyDer<'static>,
+    ) -> Result<Self, TlsError> {
+        Ok(Self {
+            rustls_cert_chain: chain,
+            rustls_key_der,
+        })
+    }
+    /// Construct new from PEM files of ca, signed cert and key
+    #[cfg(all(feature = "std", feature = "util"))]
+    pub fn with_certs_and_key_file(
+        ca_file: &Path,
+        cert_file: &Path,
+        key_file: &Path,
+    ) -> Result<Self, TlsError> {
+        let ca_der = crate::util::load_cert_der_file(ca_file)?;
+        let cert_der = crate::util::load_cert_der_file(cert_file)?;
+        let private_key_der = crate::util::load_private_key_der_file(key_file)?;
+
+        Ok(Self {
+            rustls_cert_chain: vec![ca_der, cert_der],
+            rustls_key_der: private_key_der,
+        })
+    }
+}
+
 impl Clone for TlsServerConfig {
     fn clone(&self) -> Self {
         Self {
-            server_identifier: self.server_identifier.clone(),
             rustls_cert_chain: self.rustls_cert_chain.clone(),
             rustls_key_der: self.rustls_key_der.clone_key(),
         }

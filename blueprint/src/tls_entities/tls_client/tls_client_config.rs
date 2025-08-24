@@ -9,15 +9,31 @@ use crate::TlsError;
 use crate::TlsServerIdentifier;
 
 use crate::tls_entities::{FakeServerCertVerifier, FakeTime};
+use core::net::IpAddr;
 
 /// .
 #[derive(Clone, Debug)]
 pub struct TlsClientConfig {
     ///
-    pub server_identifier: TlsServerIdentifier,
+    pub(crate) server_identifier: TlsServerIdentifier,
 }
 
-impl TlsClientConfig {}
+impl TlsClientConfig {
+    /// Build new TlsClientConfig with [`TlsServerIdentifier`]
+    pub fn with_server_id(server_identifier: TlsServerIdentifier) -> Result<Self, TlsError> {
+        Ok(Self { server_identifier })
+    }
+    /// Build with server hostname
+    pub fn with_hostname(host: &'static str) -> Result<Self, TlsError> {
+        let server_identifier = TlsServerIdentifier::with_hostname(host)?;
+        Ok(Self { server_identifier })
+    }
+    /// Build with server [`IpAddr`]
+    pub fn with_ipaddr(addr: IpAddr) -> Result<Self, TlsError> {
+        let server_identifier = TlsServerIdentifier::with_ipaddr(addr)?;
+        Ok(Self { server_identifier })
+    }
+}
 
 impl TryFrom<TlsClientConfig> for RustlsClientConfig {
     type Error = TlsError;

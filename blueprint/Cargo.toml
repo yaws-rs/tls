@@ -15,10 +15,12 @@ blueprint = { path = "../../blueprint" }
 rustls = { version = "0.23", default-features = false }
 rustls-pki-types = { version = "1.12", default-features = false }
 rustls-rustcrypto = { version = "=0.0.2-alpha", default-features = false, features = ["alloc"] }
+pem-rfc7468 = { version = "0.7", default-features = false, optional = true }
 
 [features]
 default = []
-std = ["rustls/std", "rustls-rustcrypto/std"]
+std = ["rustls/std", "rustls-rustcrypto/std", "pem-rfc7468?/std"]
+util = ["dep:pem-rfc7468"]
 
 [package.metadata.docs.rs]
 features = []

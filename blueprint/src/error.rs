@@ -4,6 +4,7 @@ use rustls::Error as RustlsError;
 use rustls_pki_types::InvalidDnsNameError as RustlsInvalidDnsNameError;
 
 /// .
+#[derive(Debug)]
 pub enum TlsError {
     /// Rustls backend reports invalid configuration
     RustlsConfig(RustlsError),

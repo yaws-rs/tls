@@ -966,6 +966,7 @@ name = "yaws-tls-blueprint"
 version = "0.0.1"
 dependencies = [
  "blueprint",
+ "pem-rfc7468",
  "rustls",
  "rustls-pki-types",
  "rustls-rustcrypto",
