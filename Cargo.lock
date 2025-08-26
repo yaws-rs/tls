@@ -69,6 +69,18 @@ name = "blueprint"
 version = "0.0.1"
 
 [[package]]
+name = "blueprint-tls"
+version = "0.0.1"
+dependencies = [
+ "blueprint",
+ "hex",
+ "pem-rfc7468",
+ "rustls",
+ "rustls-pki-types",
+ "rustls-rustcrypto",
+]
+
+[[package]]
 name = "byteorder"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -337,6 +349,12 @@ dependencies = [
  "rand_core",
  "subtle",
 ]
+
+[[package]]
+name = "hex"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
 name = "hkdf"
@@ -959,17 +977,6 @@ checksum = "c7e468321c81fb07fa7f4c636c3972b9100f0346e5b6a9f2bd0603a52f7ed277"
 dependencies = [
  "curve25519-dalek",
  "rand_core",
-]
-
-[[package]]
-name = "yaws-tls-blueprint"
-version = "0.0.1"
-dependencies = [
- "blueprint",
- "pem-rfc7468",
- "rustls",
- "rustls-pki-types",
- "rustls-rustcrypto",
 ]
 
 [[package]]

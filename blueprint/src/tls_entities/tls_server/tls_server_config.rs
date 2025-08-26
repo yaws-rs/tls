@@ -6,6 +6,9 @@ use crate::TlsServerIdentifier;
 use crate::Vec;
 use rustls_pki_types::{CertificateDer, PrivateKeyDer};
 
+#[cfg(feature = "std")]
+use rustls_pki_types::pem::PemObject;
+
 use crate::tls_entities::tls_server::RustlsServerConfig;
 
 use crate::FakeTime;
@@ -84,6 +87,15 @@ impl TryFrom<TlsServerConfig> for RustlsServerConfig {
             .map_err(TlsError::RustlsConfig)?;
 
         let rustls_config = rustls_config.with_no_client_auth();
+
+        /*        let certs_res: Vec<_> = CertificateDer::pem_file_iter("certs/cert-chain.pem")
+            .unwrap()
+            .collect();
+        let certs: Vec<_> = certs_res.into_iter().map(|res| res.unwrap()).collect();
+        let pkcs8 = PrivateKeyDer::from_pem_file("certs/rustcryp.to.rsa4096.key").unwrap();
+        let rustls_config = rustls_config
+            .with_single_cert(certs, pkcs8.into())
+            .map_err(TlsError::RustlsConfig)?; */
 
         let rustls_config = rustls_config
             .with_single_cert(c.rustls_cert_chain.clone(), c.rustls_key_der.clone_key())

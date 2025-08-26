@@ -1,5 +1,5 @@
 [package]
-name = "yaws-tls-blueprint"
+name = "blueprint-tls"
 version = "0.0.1"
 edition = "2021"
 description = "yaws TLS blueprint"
@@ -13,13 +13,14 @@ categories = ["science"]
 [dependencies]
 blueprint = { path = "../../blueprint" }
 rustls = { version = "0.23", default-features = false }
-rustls-pki-types = { version = "1.12", default-features = false }
+rustls-pki-types = { version = "1.12", default-features = false, features = ["alloc"] }
 rustls-rustcrypto = { version = "=0.0.2-alpha", default-features = false, features = ["alloc"] }
 pem-rfc7468 = { version = "0.7", default-features = false, optional = true }
+hex = "0.4.3"
 
 [features]
 default = []
-std = ["rustls/std", "rustls-rustcrypto/std", "pem-rfc7468?/std"]
+std = ["rustls/std", "rustls-rustcrypto/std", "pem-rfc7468?/std", "rustls-pki-types/std"]
 util = ["dep:pem-rfc7468"]
 
 [package.metadata.docs.rs]
