@@ -33,6 +33,8 @@ pub use position::*;
 #[cfg(feature = "util")]
 pub mod util;
 
+pub(crate) mod rustls;
+
 //-----------------------------------------------
 // Internal fix-ups
 //-----------------------------------------------

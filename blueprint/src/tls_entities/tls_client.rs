@@ -8,6 +8,8 @@ pub use tls_client_config::TlsClientConfig;
 use crate::TlsError;
 use crate::TlsPosition;
 
+use crate::rustls::CtxRustls;
+
 use rustls::client::ClientConfig as RustlsClientConfig;
 use rustls::client::UnbufferedClientConnection as RustlsClientConnection;
 
@@ -24,11 +26,17 @@ use blueprint::{Left, Right};
 /// .
 pub struct TlsClient {
     /// .
-    config: TlsClientConfig,
+    pub(crate) config: TlsClientConfig,
     /// .
-    rustls_config: RustlsClientConfig,
+    pub(crate) rustls_config: RustlsClientConfig,
     /// .
-    rustls_client: RustlsClientConnection,
+    pub(crate) rustls_client: RustlsClientConnection,
+}
+
+impl core::fmt::Debug for TlsClient {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> Result<(), core::fmt::Error> {
+        write!(f, "TlsClient")
+    }
 }
 
 use rustls_pki_types::ServerName as RustlsServerName;
@@ -51,55 +59,14 @@ impl TlsClient {
         })
     }
     /// Advance the state machine
+    #[inline]
     pub fn advance_with<B, L: Left, R: Right>(
         &mut self,
         _u: &mut B,
         l: &mut L,
         r: &mut R,
     ) -> Result<TlsPosition, TlsError> {
-        println!(
-            "Client state wants_write<{:?}> is_handshaking<{:?}> wants_read<{:?}>",
-            self.rustls_client.wants_write(),
-            self.rustls_client.is_handshaking(),
-            self.rustls_client.wants_read()
-        );
-
-        let (in_b, out_b) = l.bufs();
-
-        let status = self.rustls_client.process_tls_records(in_b);
-        let in_discard = status.discard;
-
-        let rustls_state = match status.state {
-            Err(e) => return Err(TlsError::RustlsHandleRecords(e)),
-            Ok(s) => s,
-        };
-
-        match rustls_state {
-            RustlsConnectionState::EncodeTlsData(mut e) => {
-                let encoded_size = e.encode(out_b).map_err(TlsError::RustlsEncode)?;
-
-                Ok(TlsPosition {
-                    in_discard,
-                    out_encoded: 0,
-                    out_send: encoded_size,
-                })
-            }
-            RustlsConnectionState::TransmitTlsData(mut t) => {
-                match t.may_encrypt_app_data() {
-                    Some(w) => println!("Server can encrypt."),
-                    None => println!("Server cannot encrypt yet."),
-                }
-                t.done();
-                Ok(TlsPosition {
-                    in_discard,
-                    out_send: 0,
-                    out_encoded: 0,
-                })
-            }
-            _ => {
-                dbg!(rustls_state);
-                todo!()
-            }
-        }
+        let mut ctx = CtxRustls::with_client(self);
+        ctx.advance_with(_u, l, r)
     }
 }
