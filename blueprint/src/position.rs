@@ -11,6 +11,12 @@ pub struct TlsPosition {
 
 // TODO: make builder / typestate
 impl TlsPosition {
+    pub(crate) fn with_blocked_handshake(in_discard: usize) -> Self {
+        Self {
+            in_discard,
+            ..Default::default()
+        }
+    }
     pub(crate) fn with_discard_only(in_discard: usize) -> Self {
         Self {
             in_discard,

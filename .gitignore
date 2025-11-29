@@ -1,1 +1,8 @@
 target
+blueprint/certs/*.crt
+blueprint/certs/*.srl
+blueprint/certs/*.csr
+blueprint/certs/*.pem
+blueprint/certs/*.key
+blueprint/certs/*.pfx
+

@@ -18,6 +18,7 @@ struct PreTls {
     buf_in_len: usize,
     buf_out: Vec<u8>,
     buf_out_len: usize,
+    is_ready: bool,
 }
 
 impl Left for PreTls {
@@ -30,6 +31,13 @@ impl Left for PreTls {
     }
     fn left_bufs_mut(&mut self) -> (&mut [u8], &mut [u8]) {
         (&mut self.buf_in[0..self.buf_in_len], &mut self.buf_out)
+    }
+    fn is_ready(&self) -> bool {
+        self.is_ready
+    }
+    fn set_ready(&mut self, s: bool) -> bool {
+        self.is_ready = s;
+        s
     }
 }
 

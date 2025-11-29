@@ -48,7 +48,7 @@ impl TlsServerConfig {
         let private_key_der = crate::util::load_private_key_der_file(key_file)?;
 
         Ok(Self {
-            rustls_cert_chain: vec![ca_der, cert_der],
+            rustls_cert_chain: vec![cert_der, ca_der],
             rustls_key_der: private_key_der,
         })
     }
@@ -72,35 +72,47 @@ impl TryFrom<TlsServerConfig> for RustlsServerConfig {
         // TODO: time in no_std
         let fake_time = FakeTime {};
 
+        let provider = rustls_rustcrypto::provider();
+        //let provider = rustls_graviola::default_provider();
+        //let provider = rustls_openssl::default_provider();
+        //let provider = rustls_mbedcrypto_provider::mbedtls_crypto_provider();
+
+        
         #[cfg(feature = "std")]
         let rustls_config =
-            RustlsServerConfig::builder_with_provider(Arc::new(rustls_rustcrypto::provider()));
+            RustlsServerConfig::builder_with_provider(Arc::new(provider));
 
         #[cfg(not(feature = "std"))]
         let rustls_config = RustlsServerConfig::builder_with_details(
-            Arc::new(rustls_rustcrypto::provider()),
+            Arc::new(provider),
             Arc::new(fake_time),
         );
 
+        //let rustls_config = RustlsServerConfig::builder();
+
+        
         let rustls_config = rustls_config
             .with_safe_default_protocol_versions()
             .map_err(TlsError::RustlsConfig)?;
-
+        
+        
         let rustls_config = rustls_config.with_no_client_auth();
 
-        /*        let certs_res: Vec<_> = CertificateDer::pem_file_iter("certs/cert-chain.pem")
+        /*
+        let certs_res: Vec<_> = CertificateDer::pem_file_iter("../../../tls/blueprint/certs/cert-chain.pem")
             .unwrap()
             .collect();
         let certs: Vec<_> = certs_res.into_iter().map(|res| res.unwrap()).collect();
-        let pkcs8 = PrivateKeyDer::from_pem_file("certs/rustcryp.to.rsa4096.key").unwrap();
+        let pkcs8 = PrivateKeyDer::from_pem_file("../../../tls/blueprint/certs/rustcryp.to.rsa4096.key").unwrap();
         let rustls_config = rustls_config
             .with_single_cert(certs, pkcs8.into())
-            .map_err(TlsError::RustlsConfig)?; */
-
+            .map_err(TlsError::RustlsConfig)?;
+         */
+        
         let rustls_config = rustls_config
             .with_single_cert(c.rustls_cert_chain.clone(), c.rustls_key_der.clone_key())
             .map_err(TlsError::RustlsConfig)?;
-
+         
         Ok(rustls_config)
     }
 }
