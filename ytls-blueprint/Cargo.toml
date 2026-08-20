@@ -1,0 +1,33 @@
+[package]
+name = "blueprint-ytls"
+version = "0.0.1"
+edition = "2021"
+description = "yaws TLS ytls blueprint"
+homepage = "https://github.com/yaws-rs/tls"
+keywords = ["io", "uring", "epoll", "async"]
+license = "Apache-2.0/MIT"
+readme = "README.md"
+repository = "https://github.com/yaws-rs/tls"
+categories = ["science"]
+
+[dependencies]
+blueprint = { path = "../../blueprint" }
+ytls-rustcrypto = { path = "../../../yolo/yolotls/crypto/rustcrypto", version = "0.0.2" }
+ytls-traits = { path = "../../../yolo/yolotls/traits", version = "0.0.2", default-features = false }
+ytls-server = { path = "../../../yolo/yolotls/server", version = "0.0.8", default-features = false, optional = true }
+ytls-typed = { path = "../../../yolo/yolotls/typed", version = "0.0.1", default-features = false }
+pem-rfc7468 = { version = "0.7", default-features = false, optional = true }
+pkcs8 = { version = "0.11.0-rc.8", features = ["pem"] }
+hex = "0.4.3"
+heapless = { version = "0.9", default-features = false }
+rand = { version = "=0.10.0-rc.5", default-features = false, features = ["os_rng"] }
+
+[features]
+default = ["server"]
+server = ["dep:ytls-server"]
+std = []
+zeroize = ["ytls-server?/zeroize"]
+
+[package.metadata.docs.rs]
+features = []
+

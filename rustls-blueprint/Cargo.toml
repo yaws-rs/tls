@@ -1,8 +1,8 @@
 [package]
-name = "blueprint-tls"
+name = "blueprint-rustls"
 version = "0.0.1"
 edition = "2021"
-description = "yaws TLS blueprint"
+description = "yaws TLS rustls blueprint"
 homepage = "https://github.com/yaws-rs/tls"
 keywords = ["io", "uring", "epoll", "async"]
 license = "Apache-2.0/MIT"
@@ -16,7 +16,7 @@ rustls = { version = "0.23", default-features = false, features = [] }
 #rustls = { version = "0.23", default-features = false, features = ["aws-lc-rs"] }
 rustls-pki-types = { version = "1.12", default-features = false, features = ["alloc"] }
 rustls-rustcrypto = { version = "=0.0.2-alpha", default-features = false, features = ["alloc"] }
-rustls-graviola = { version = "0.3" }
+rustls-graviola = { version = "0.4.0", git = "https://github.com/ctz/graviola.git" }
 #rustls-openssl = "0.3.0"
 #rustls-mbedcrypto-provider = { version = "0.1.1" }
 pem-rfc7468 = { version = "0.7", default-features = false, optional = true }

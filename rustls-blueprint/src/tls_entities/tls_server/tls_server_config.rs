@@ -77,7 +77,6 @@ impl TryFrom<TlsServerConfig> for RustlsServerConfig {
         //let provider = rustls_openssl::default_provider();
         //let provider = rustls_mbedcrypto_provider::mbedtls_crypto_provider();
 
-        
         #[cfg(feature = "std")]
         let rustls_config =
             RustlsServerConfig::builder_with_provider(Arc::new(provider));

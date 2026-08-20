@@ -81,6 +81,9 @@ impl Right for PostTls {
         self.buf_in[start_pos..end_pos].copy_from_slice(bs);
         self.buf_in_len += bs.len();
     }
+    fn right_lens(&self) -> (usize, usize) {
+        (self.buf_in_len, self.buf_out_len)
+    }
 }
 
 const ZERO_BUF: [u8; 8192] = [0u8; 8192];

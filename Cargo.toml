@@ -1,4 +1,4 @@
 [workspace]
-members = ["blueprint"]
+members = ["rustls-blueprint", "ytls-blueprint"]
 exclude = ["examples/*"]
 resolver = "2"
