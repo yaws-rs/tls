@@ -7,10 +7,18 @@ pub struct TlsPosition {
     pub out_send: usize,
     pub out_encoded: usize,
     pub want_write_right: bool,
+    pub peer_closed: bool,
 }
 
 // TODO: make builder / typestate
 impl TlsPosition {
+    pub(crate) fn peer_closed(in_discard: usize) -> Self {
+        Self {
+            in_discard,
+            peer_closed: true,
+            ..Default::default()
+        }
+    }
     pub(crate) fn with_blocked_handshake(in_discard: usize) -> Self {
         Self {
             in_discard,

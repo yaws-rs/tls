@@ -1,8 +1,8 @@
 target
-blueprint/certs/*.crt
-blueprint/certs/*.srl
-blueprint/certs/*.csr
-blueprint/certs/*.pem
-blueprint/certs/*.key
-blueprint/certs/*.pfx
+test_certs/*.crt
+test_certs/*.srl
+test_certs/*.csr
+test_certs/*.pem
+test_certs/*.key
+test_certs/*.pfx
 

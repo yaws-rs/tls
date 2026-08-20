@@ -223,6 +223,14 @@ impl<'ctx> CtxRustls<'ctx> {
                     l.set_left_in_blocked(true);
 		            TlsPosition::with_blocked_handshake(in_discard)
                 },
+                TlsConnectionState::Client(RustlsConnectionState::PeerClosed) => {
+                    l.shutdown();
+                    TlsPosition::peer_closed(in_discard)
+                },
+                TlsConnectionState::Server(RustlsConnectionState::PeerClosed) => {
+                    l.shutdown();
+                    TlsPosition::peer_closed(in_discard)
+                },
                 TlsConnectionState::Client(mut c) => {
                     todo!("Client uninmplemented: {:?}", c)
                 }
