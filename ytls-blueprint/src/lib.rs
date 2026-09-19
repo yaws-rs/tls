@@ -12,9 +12,9 @@
 // Re-Exports
 //***********************************************
 
-pub use ytls_traits::{CryptoConfig, CryptoRng};
 #[cfg(feature = "server")]
-pub use ytls_server::{Alpn};
+pub use ytls_server::Alpn;
+pub use ytls_traits::{CryptoConfig, CryptoRng};
 
 //-----------------------------------------------
 // All Errors

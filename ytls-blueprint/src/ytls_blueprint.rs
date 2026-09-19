@@ -26,7 +26,7 @@ impl Orbit for TlsServerOrbit {
         r: &mut R,
     ) -> Result<Self::Position, Self::Error> {
         self.server.advance_with(_u, l, r)
-    }    
+    }
 }
 
 #[cfg(feature = "server")]
@@ -38,6 +38,8 @@ impl BluePrint<TlsServerOrbit> for TlsServer {
         todo!()
     }
     fn with_configuration(c: Self::Config) -> Result<TlsServerOrbit, Self::Error> {
-        Ok(TlsServerOrbit { server: TlsServer::with_config(c)? })
+        Ok(TlsServerOrbit {
+            server: TlsServer::with_config(c)?,
+        })
     }
 }

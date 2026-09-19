@@ -2,5 +2,4 @@
 
 /// TLS Related Error
 #[derive(Debug)]
-pub enum TlsError {
-}
+pub enum TlsError {}
