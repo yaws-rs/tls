@@ -17,9 +17,11 @@ use rustls::unbuffered::UnbufferedStatus as RustlsUnbufferedStatus;
 
 use blueprint::{Left, Right};
 
-/// .
+/// Rustls Server
 pub struct TlsServer {
+    #[allow(dead_code)]
     pub(crate) config: TlsServerConfig,
+    #[allow(dead_code)]
     pub(crate) rustls_config: RustlsServerConfig,
     pub(crate) rustls_server: RustlsServerConnection,
 }

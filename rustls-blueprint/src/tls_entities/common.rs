@@ -33,7 +33,7 @@ impl TryFrom<TlsServerIdentifier> for RustlsServerName<'_> {
             TlsServerIdentifier::DnsName(s) => {
                 Ok(Self::DnsName(s.try_into().map_err(TlsError::RustlsDns)?))
             }
-            TlsServerIdentifier::IpAddr(i) => todo!(), //
+            TlsServerIdentifier::IpAddr(_i) => todo!(),
         }
     }
 }

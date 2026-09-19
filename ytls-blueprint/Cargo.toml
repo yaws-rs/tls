@@ -12,15 +12,15 @@ categories = ["science"]
 
 [dependencies]
 blueprint = { path = "../../blueprint" }
-ytls-rustcrypto = { path = "../../../yolo/yolotls/crypto/rustcrypto", version = "0.0.2" }
-ytls-traits = { path = "../../../yolo/yolotls/traits", version = "0.0.2", default-features = false }
-ytls-server = { path = "../../../yolo/yolotls/server", version = "0.0.8", default-features = false, optional = true }
+ytls-rustcrypto = { path = "../../../yolo/yolotls/crypto/rustcrypto", version = "0.0.3" }
+ytls-traits = { path = "../../../yolo/yolotls/traits", version = "0.0.3", default-features = false }
+ytls-server = { path = "../../../yolo/yolotls/server", version = "0.0.9", default-features = false, optional = true }
 ytls-typed = { path = "../../../yolo/yolotls/typed", version = "0.0.1", default-features = false }
 pem-rfc7468 = { version = "0.7", default-features = false, optional = true }
-pkcs8 = { version = "0.11.0-rc.8", features = ["pem"] }
+pkcs8 = { version = "0.11", features = ["pem"] }
 hex = "0.4.3"
 heapless = { version = "0.9", default-features = false }
-rand = { version = "=0.10.0-rc.5", default-features = false, features = ["os_rng"] }
+rand = { version = "0.10", default-features = false, features = ["sys_rng"] }
 
 [features]
 default = ["server"]

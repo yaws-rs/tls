@@ -16,18 +16,24 @@ use rustls::client::UnbufferedClientConnection as RustlsClientConnection;
 use rustls::unbuffered::ConnectionState as RustlsConnectionState;
 use rustls::unbuffered::UnbufferedStatus as RustlsUnbufferedStatus;
 
-use crate::tls_entities::{FakeServerCertVerifier, FakeTime};
+use crate::tls_entities::FakeServerCertVerifier;
+
+//TODO: no_std time wiring?
+//#[cfg(not(feature = "std"))]
+//use crate::tls_entities::FakeTime;
 
 use crate::tls_entities::TlsServerIdentifier;
 use rustls_pki_types::DnsName as RustlsDnsName;
 
 use blueprint::{Left, Right};
 
-/// .
+/// Rustls Client
 pub struct TlsClient {
     /// .
+    #[allow(dead_code)]
     pub(crate) config: TlsClientConfig,
     /// .
+    #[allow(dead_code)]
     pub(crate) rustls_config: RustlsClientConfig,
     /// .
     pub(crate) rustls_client: RustlsClientConnection,

@@ -11,13 +11,11 @@ use std::{fs::File, io::Read, path::Path};
 /// Read rustls compatible CertificateDer from a file
 #[cfg(feature = "std")]
 pub fn load_cert_der_file(ca_path: &Path) -> Result<CertificateDer<'static>, TlsError> {
-
     let mut pkcs10_file = File::open(ca_path).unwrap();
     let mut pkcs10_data: Vec<u8> = vec![];
     pkcs10_file.read_to_end(&mut pkcs10_data).unwrap();
-    
+
     Ok(CertificateDer::from_pem_slice(&pkcs10_data).unwrap())
-    
 }
 
 /*
@@ -57,7 +55,7 @@ pub fn load_private_key_der_bytes(key_data_in: Vec<u8>) -> Result<PrivateKeyDer<
 } */
 
 /// provide rustls roots with pinned CA cert
-pub fn roots(ca_pinned: CertificateDer) -> RustlsRootCertStore {
+pub fn roots(ca_pinned: CertificateDer<'_>) -> RustlsRootCertStore {
     let mut roots = RustlsRootCertStore::empty();
     roots.add(ca_pinned).unwrap();
     roots

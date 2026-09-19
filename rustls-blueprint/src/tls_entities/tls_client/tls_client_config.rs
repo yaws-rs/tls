@@ -8,7 +8,11 @@ use crate::TlsError;
 
 use crate::TlsServerIdentifier;
 
-use crate::tls_entities::{FakeServerCertVerifier, FakeTime};
+use crate::tls_entities::FakeServerCertVerifier;
+
+#[cfg(not(feature = "std"))]
+use crate::tls_entities::FakeTime;
+
 use core::net::IpAddr;
 
 /// .
@@ -39,7 +43,6 @@ impl TryFrom<TlsClientConfig> for RustlsClientConfig {
     type Error = TlsError;
 
     fn try_from(_: TlsClientConfig) -> Result<Self, Self::Error> {
-        let fake_time = FakeTime {};
         let fake_server_cert_verifier = FakeServerCertVerifier {};
 
         #[cfg(feature = "std")]
@@ -50,7 +53,7 @@ impl TryFrom<TlsClientConfig> for RustlsClientConfig {
         #[cfg(not(feature = "std"))]
         let rustls_config = rustls::client::ClientConfig::builder_with_details(
             Arc::new(rustls_rustcrypto::provider()),
-            Arc::new(fake_time),
+            Arc::new(FakeTime {}),
         );
 
         let rustls_config = rustls_config
