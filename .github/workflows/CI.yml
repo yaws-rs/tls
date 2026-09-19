@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - crate: ytls-blueprint
+          - crate: blueprint-ytls
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@master
