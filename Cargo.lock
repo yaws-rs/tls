@@ -106,7 +106,6 @@ name = "blueprint-rustls"
 version = "0.0.1"
 dependencies = [
  "blueprint",
- "hex",
  "pem-rfc7468 0.7.0",
  "pkcs8 0.11.0",
  "rustls",
@@ -121,7 +120,6 @@ version = "0.0.1"
 dependencies = [
  "blueprint",
  "heapless",
- "hex",
  "pem-rfc7468 0.7.0",
  "pkcs8 0.11.0",
  "rand 0.10.2",
@@ -676,12 +674,6 @@ dependencies = [
  "hash32",
  "stable_deref_trait",
 ]
-
-[[package]]
-name = "hex"
-version = "0.4.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
 name = "hkdf"
@@ -1649,6 +1641,8 @@ dependencies = [
 [[package]]
 name = "ytls-ctx"
 version = "0.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2e189a0b86848c91694dab8472f45526f1051f45168bf46d25794c3027e396dc"
 dependencies = [
  "ytls-record",
  "ytls-traits",
@@ -1657,6 +1651,8 @@ dependencies = [
 [[package]]
 name = "ytls-extensions"
 version = "0.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0335f540f1716d42e50e2b81377e79b879ef21ad7f45cf7c5729a21dfeef3d30"
 dependencies = [
  "ytls-typed",
 ]
@@ -1664,6 +1660,8 @@ dependencies = [
 [[package]]
 name = "ytls-keys"
 version = "0.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f4368a209c22fd6e12b7ad03e6162d4bdbef90a3df721ff0636d0cc0a74c920d"
 dependencies = [
  "ytls-traits",
  "ytls-util",
@@ -1673,6 +1671,8 @@ dependencies = [
 [[package]]
 name = "ytls-record"
 version = "0.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a8854d84d1f25fca8f0e6f65622fe7537f69af6343614b088cc22d8762f2a39"
 dependencies = [
  "ytls-traits",
  "zerocopy",
@@ -1681,6 +1681,8 @@ dependencies = [
 [[package]]
 name = "ytls-rustcrypto"
 version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7bfd4095f9daa4882fd69a8d60c41fe2a35057bd7c898d1797e3e27851ff7d8e"
 dependencies = [
  "chacha20poly1305 0.11.0",
  "hkdf 0.13.0",
@@ -1695,6 +1697,8 @@ dependencies = [
 [[package]]
 name = "ytls-server"
 version = "0.0.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7959df755eb14194354b5639533570a8c93883767c2f35e2b8cdedf43f356315"
 dependencies = [
  "ctutils 0.3.1",
  "rand_core 0.10.1",
@@ -1711,6 +1715,8 @@ dependencies = [
 [[package]]
 name = "ytls-traits"
 version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76e7b0083c5586ca5e188570167cd526178bb1b3a8a6319a7246c881c38a3af3"
 dependencies = [
  "rand_core 0.10.1",
 ]
@@ -1718,6 +1724,8 @@ dependencies = [
 [[package]]
 name = "ytls-typed"
 version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7195ba800568da9ca1017a179f8eeeb395be04be825a503b28534b558d9ece2c"
 dependencies = [
  "num_enum",
 ]
@@ -1725,6 +1733,8 @@ dependencies = [
 [[package]]
 name = "ytls-util"
 version = "0.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25442449551119c9bcc4b4a29510f1b85c4f405132301e3149fc5e00e54a70da"
 dependencies = [
  "crypto-bigint 0.7.5",
 ]

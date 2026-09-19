@@ -21,7 +21,7 @@ rustls-graviola = { version = "0.4.0", git = "https://github.com/ctz/graviola.gi
 #rustls-mbedcrypto-provider = { version = "0.1.1" }
 pem-rfc7468 = { version = "0.7", default-features = false, optional = true }
 pkcs8 = { version = "0.11", features = ["pem"] }
-hex = "0.4.3"
+#hex = "0.4.3"
 
 [features]
 default = []
