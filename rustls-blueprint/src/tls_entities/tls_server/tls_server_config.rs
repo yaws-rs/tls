@@ -11,6 +11,9 @@ use rustls_pki_types::pem::PemObject;
 
 use crate::tls_entities::tls_server::RustlsServerConfig;
 
+#[cfg(not(feature = "std"))]
+use crate::tls_entities::FakeTime;
+
 #[cfg(feature = "std")]
 use std::path::Path;
 

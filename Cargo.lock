@@ -97,7 +97,9 @@ dependencies = [
 
 [[package]]
 name = "blueprint"
-version = "0.1.0"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f41c3356dcfd6d77fe8a2c437079760cc44b1370b579dea360b5637eb995411f"
 
 [[package]]
 name = "blueprint-rustls"
