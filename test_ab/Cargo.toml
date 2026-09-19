@@ -12,7 +12,7 @@ categories = ["science"]
 exclude = ["assets/*"]
 
 [dependencies]
-blueprint = { path = "../../blueprint", version = "0.1.0", default-features = false }
+blueprint = { version = "0.2.0", default-features = false }
 #blueprints-known = { path = "../../../blueprint/known", version = "0.1.0", default-features = false, features = ["ytls-server", "rustls"] }
 blueprint-ytls = { path = "../ytls-blueprint", version = "0.0.1", default-features = false, features = ["server", "zeroize"] }
 blueprint-rustls = { path = "../rustls-blueprint", version = "0.0.1", default-features = false, features = ["std", "util"] }

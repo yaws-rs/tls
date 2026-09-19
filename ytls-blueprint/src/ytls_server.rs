@@ -12,7 +12,7 @@ use ::ytls_server::TlsServerCtx;
 //use ::ytls_traits::{CryptoRng, CryptoConfig};
 use ::ytls_traits::{TlsLeftIn, TlsLeftOut, TlsRight};
 
-use blueprint::{Left, Right, InBuffer};
+use blueprint::{InBuffer, Left, Right};
 
 use heapless::Vec;
 
@@ -39,21 +39,27 @@ pub enum ConfigError {
 impl TlsServerConfig {
     /// Initialize configuration with a certificate authority, the server certificate and it's associated private key
     pub fn with_ca_cert_key(s_ca: &[u8], s_cert: &[u8], s_key: &[u8]) -> Result<Self, ConfigError> {
-
         let mut ca_cert = Vec::<u8, 1024>::new();
         let mut server_cert = Vec::<u8, 1024>::new();
         let mut server_private_key = Vec::<u8, 512>::new();
 
-        ca_cert.extend_from_slice(s_ca)
+        ca_cert
+            .extend_from_slice(s_ca)
             .map_err(|_| ConfigError::OversizedCa)?;
-        
-        server_cert.extend_from_slice(s_cert)
+
+        server_cert
+            .extend_from_slice(s_cert)
             .map_err(|_| ConfigError::OversizedCert)?;
 
-        server_private_key.extend_from_slice(s_key)
+        server_private_key
+            .extend_from_slice(s_key)
             .map_err(|_| ConfigError::OversizedPrivateKey)?;
-        
-        Ok(Self { ca_cert, server_cert, server_private_key })
+
+        Ok(Self {
+            ca_cert,
+            server_cert,
+            server_private_key,
+        })
     }
 }
 
@@ -84,12 +90,12 @@ impl TlsServerCtxConfig for TlsServerConfig {
             1 => &self.ca_cert,
             _ => unreachable!(),
         }
-    }    
+    }
 }
 
 /// yTLS Server Blueprint
 pub struct TlsServer {
-    ctx: TlsServerCtx<TlsServerConfig, ytls_rustcrypto::RustCrypto, ThreadRng>
+    ctx: TlsServerCtx<TlsServerConfig, ytls_rustcrypto::RustCrypto, ThreadRng>,
 }
 
 impl core::fmt::Debug for TlsServer {
@@ -122,7 +128,6 @@ struct ProxyLeftOut<'r> {
 
 impl<'r> TlsLeftOut for ProxyLeftOut<'r> {
     fn send_record_out(&mut self, data: &[u8]) -> () {
-
         let remaining = self.left_out.len() - self.sent_out;
 
         if remaining < data.len() {
@@ -132,7 +137,7 @@ impl<'r> TlsLeftOut for ProxyLeftOut<'r> {
 
         let start = self.sent_out;
         let end = self.sent_out + data.len();
-        
+
         self.left_out[start..end].copy_from_slice(data);
         self.sent_out += data.len();
     }
@@ -152,20 +157,17 @@ impl<'r, R: Right> TlsRight for ProxyRight<'r, R> {
     }
     fn right_buf_mark_discard_out(&mut self, _len: usize) -> () {
         let buf_out = self.r.buf_right_out();
-        todo!("discard _len: {} vs out_buf: {}", _len, buf_out.len());        
+        todo!("discard _len: {} vs out_buf: {}", _len, buf_out.len());
     }
 }
 
 impl TlsServer {
     /// Construct new
     pub fn with_config(config: TlsServerConfig) -> Result<Self, TlsError> {
-
         let rng = rand::rng();
         let crypto_cfg = ytls_rustcrypto::RustCrypto;
 
-        let tls_ctx = TlsServerCtx::with_required(
-            config, crypto_cfg, rng
-        );
+        let tls_ctx = TlsServerCtx::with_required(config, crypto_cfg, rng);
         Ok(Self { ctx: tls_ctx })
     }
     /// Advance the state machine
@@ -183,7 +185,7 @@ impl TlsServer {
         let mut new_len_out = left_out_len;
 
         let _ = left_out_b.split_off_mut(..left_out_len);
-        
+
         let mut left_in = ProxyLeftIn {
             left_in: left_inputs,
             discard_in: 0,
@@ -194,9 +196,7 @@ impl TlsServer {
             sent_out: 0,
         };
 
-        let mut right_proxy = ProxyRight {
-            r,
-        };
+        let mut right_proxy = ProxyRight { r };
 
         self.ctx
             .advance_with(&mut left_in, &mut left_out, &mut right_proxy)
@@ -214,12 +214,9 @@ impl TlsServer {
             l.set_ready(true);
             l.set_left_in_blocked(false);
         }
-        
+
         l.left_set_lens(new_len_in, new_len_out);
 
         Ok(TlsPosition {})
     }
-    
 }
-
-    

@@ -11,7 +11,7 @@ repository = "https://github.com/yaws-rs/tls"
 categories = ["science"]
 
 [dependencies]
-blueprint = { path = "../../blueprint" }
+blueprint = { version = "0.2" }
 rustls = { version = "0.23", default-features = false, features = [] }
 #rustls = { version = "0.23", default-features = false, features = ["aws-lc-rs"] }
 rustls-pki-types = { version = "1.12", default-features = false, features = ["alloc"] }
@@ -20,8 +20,8 @@ rustls-graviola = { version = "0.4.0", git = "https://github.com/ctz/graviola.gi
 #rustls-openssl = "0.3.0"
 #rustls-mbedcrypto-provider = { version = "0.1.1" }
 pem-rfc7468 = { version = "0.7", default-features = false, optional = true }
-pkcs8 = { version = "0.11.0-rc.8", features = ["pem"] }
-hex = "0.4.3"
+pkcs8 = { version = "0.11", features = ["pem"] }
+#hex = "0.4.3"
 
 [features]
 default = []
