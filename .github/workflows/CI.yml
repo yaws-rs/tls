@@ -48,7 +48,7 @@ jobs:
           toolchain: stable
           components: clippy, rustfmt
 
-      - run: cd test_certs; make prime256v1; cd.. ;cargo test --all-features
+      - run: cd test_certs; make prime256v1; cd .. ;cargo test --all-features
       - run: cargo fmt --check
       - run: cargo clippy
       - run: cargo doc
