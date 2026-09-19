@@ -6,6 +6,7 @@
     unused_lifetimes,
     unused_qualifications
 )]
+#![allow(unused_imports)]
 #![doc = include_str!("../README.md")]
 
 //***********************************************

@@ -9,9 +9,7 @@ use blueprint::{Left, Right};
 #[cfg(feature = "server")]
 use crate::{TlsServer, TlsServerConfig};
 
-#[cfg(feature = "server")]
-use ytls_server::TlsServerCtxConfig;
-
+/// yTLS Server Orbit
 #[cfg(feature = "server")]
 pub struct TlsServerOrbit {
     server: TlsServer,

@@ -1,12 +1,17 @@
 //! Tls position
 
-/// .
+/// Orbit position for Rustls
 #[derive(Debug, Default)]
 pub struct TlsPosition {
+    /// Out discard size
     pub in_discard: usize,
+    /// Out send size
     pub out_send: usize,
+    /// Out encoded size
     pub out_encoded: usize,
+    /// Want to write right side?
     pub want_write_right: bool,
+    /// Peer closed?
     pub peer_closed: bool,
 }
 
@@ -31,13 +36,14 @@ impl TlsPosition {
             ..Default::default()
         }
     }
+    /*
     pub(crate) fn with_encoded(in_discard: usize, out_encoded: usize) -> Self {
         Self {
             in_discard,
             out_encoded,
             ..Default::default()
         }
-    }
+    } */
     pub(crate) fn with_send(in_discard: usize, out_send: usize) -> Self {
         Self {
             in_discard,

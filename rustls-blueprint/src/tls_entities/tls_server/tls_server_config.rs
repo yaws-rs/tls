@@ -11,8 +11,6 @@ use rustls_pki_types::pem::PemObject;
 
 use crate::tls_entities::tls_server::RustlsServerConfig;
 
-use crate::FakeTime;
-
 #[cfg(feature = "std")]
 use std::path::Path;
 
@@ -70,6 +68,7 @@ impl TryFrom<TlsServerConfig> for RustlsServerConfig {
 
     fn try_from(c: TlsServerConfig) -> Result<Self, Self::Error> {
         // TODO: time in no_std
+        #[cfg(not(feature = "std"))]
         let fake_time = FakeTime {};
 
         let provider = rustls_rustcrypto::provider();
@@ -78,23 +77,18 @@ impl TryFrom<TlsServerConfig> for RustlsServerConfig {
         //let provider = rustls_mbedcrypto_provider::mbedtls_crypto_provider();
 
         #[cfg(feature = "std")]
-        let rustls_config =
-            RustlsServerConfig::builder_with_provider(Arc::new(provider));
+        let rustls_config = RustlsServerConfig::builder_with_provider(Arc::new(provider));
 
         #[cfg(not(feature = "std"))]
-        let rustls_config = RustlsServerConfig::builder_with_details(
-            Arc::new(provider),
-            Arc::new(fake_time),
-        );
+        let rustls_config =
+            RustlsServerConfig::builder_with_details(Arc::new(provider), Arc::new(fake_time));
 
         //let rustls_config = RustlsServerConfig::builder();
 
-        
         let rustls_config = rustls_config
             .with_safe_default_protocol_versions()
             .map_err(TlsError::RustlsConfig)?;
-        
-        
+
         let rustls_config = rustls_config.with_no_client_auth();
 
         /*
@@ -107,11 +101,11 @@ impl TryFrom<TlsServerConfig> for RustlsServerConfig {
             .with_single_cert(certs, pkcs8.into())
             .map_err(TlsError::RustlsConfig)?;
          */
-        
+
         let rustls_config = rustls_config
             .with_single_cert(c.rustls_cert_chain.clone(), c.rustls_key_der.clone_key())
             .map_err(TlsError::RustlsConfig)?;
-         
+
         Ok(rustls_config)
     }
 }

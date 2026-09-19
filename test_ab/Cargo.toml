@@ -1,0 +1,30 @@
+[package]
+name = "yaws-blueprint-tls-ab-test"
+version = "0.0.1"
+edition = "2021"
+description = "YAWS A/B TLS state machine tester"
+homepage = "https://github.com/yaws-rs/tls"
+keywords = ["io", "uring", "epoll", "async"]
+license = "Apache-2.0/MIT"
+readme = "README.md"
+repository = "https://github.com/yaws-rs/tls"
+categories = ["science"]
+exclude = ["assets/*"]
+
+[dependencies]
+blueprint = { path = "../../blueprint", version = "0.1.0", default-features = false }
+#blueprints-known = { path = "../../../blueprint/known", version = "0.1.0", default-features = false, features = ["ytls-server", "rustls"] }
+blueprint-ytls = { path = "../ytls-blueprint", version = "0.0.1", default-features = false, features = ["server", "zeroize"] }
+blueprint-rustls = { path = "../rustls-blueprint", version = "0.0.1", default-features = false, features = ["std", "util"] }
+#ytls-rustcrypto = { version = "0.0.2" }
+rand = { version = "0.10", default-features = false, features = ["thread_rng"] }
+pem-rfc7468 = { version = "1", default-features = false, features = ["alloc"] }
+sec1 = { version = "0.8", default-features = false }
+openssl = { version = "0.10" }
+
+[features]
+default = []
+std = []
+
+[package.metadata.docs.rs]
+features = []
