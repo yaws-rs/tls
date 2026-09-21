@@ -4,8 +4,8 @@ Serves to A/B test switchable YAWS TLS Orbits against OpenSSL
 
 # Under Test
 
-![under-test.jpg]
+![under test](assets/under-test.jpg)
 
 # Left and Right Driver
 
-![left-right-driver.jpg]
+![left-right-driver](./assets/left-right-driver.jpg)
