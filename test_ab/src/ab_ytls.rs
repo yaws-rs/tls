@@ -1,7 +1,6 @@
 //! A/B yTLS
 
 use crate::*;
-use blueprint::BluePrint;
 use blueprint::Orbit;
 use blueprint_ytls::{Alpn, TlsServerCtxConfig, TlsServerOrbit};
 use blueprint_ytls::{CryptoConfig, CryptoRng};
