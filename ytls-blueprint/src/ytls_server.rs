@@ -9,64 +9,28 @@ pub use ytls_server::TlsServerCtxConfig;
 pub use ytls_typed::Alpn;
 
 use ::ytls_server::TlsServerCtx;
-//use ::ytls_traits::{CryptoRng, CryptoConfig};
+use ::ytls_traits::{CryptoConfig, CryptoRng};
 use ::ytls_traits::{TlsLeftIn, TlsLeftOut, TlsRight};
 
 use blueprint::{InBuffer, Left, Right};
 
-use heapless::Vec;
-
-use rand::rngs::ThreadRng;
-
-/// Proxy configuration to yTLS Server Context
-pub struct TlsServerConfig {
-    ca_cert: Vec<u8, 1024>,
-    server_cert: Vec<u8, 1024>,
-    server_private_key: Vec<u8, 512>,
+/// Implement to provide the required configuration
+pub trait TlsServerConfig {
+    /// Chosen Crypto provider
+    fn init_crypto(&self) -> impl CryptoConfig + Clone;
+    /// Provide environment relevant CryptoRng implementation
+    fn init_rng(&self) -> impl CryptoRng;
+    /// Provide the context related configuration
+    fn ctx_config(&self) -> impl TlsServerCtxConfig;
 }
 
-/// Configuration errors
-#[derive(Debug)]
-pub enum ConfigError {
-    /// Oversize Certificate for Certificate Authority
-    OversizedCa,
-    /// Oversize Certificate for Server Certificate
-    OversizedCert,
-    /// Oversize Private Key
-    OversizedPrivateKey,
-}
+//struct TlsCtxConfig {
 
-impl TlsServerConfig {
-    /// Initialize configuration with a certificate authority, the server certificate and it's associated private key
-    pub fn with_ca_cert_key(s_ca: &[u8], s_cert: &[u8], s_key: &[u8]) -> Result<Self, ConfigError> {
-        let mut ca_cert = Vec::<u8, 1024>::new();
-        let mut server_cert = Vec::<u8, 1024>::new();
-        let mut server_private_key = Vec::<u8, 512>::new();
-
-        ca_cert
-            .extend_from_slice(s_ca)
-            .map_err(|_| ConfigError::OversizedCa)?;
-
-        server_cert
-            .extend_from_slice(s_cert)
-            .map_err(|_| ConfigError::OversizedCert)?;
-
-        server_private_key
-            .extend_from_slice(s_key)
-            .map_err(|_| ConfigError::OversizedPrivateKey)?;
-
-        Ok(Self {
-            ca_cert,
-            server_cert,
-            server_private_key,
-        })
-    }
-}
-
+/*
 impl TlsServerCtxConfig for TlsServerConfig {
     #[inline]
     fn dns_host_name(&self, host: &str) -> bool {
-        host == "test.rustcryp.to"
+        self.host_name()
     }
     #[inline]
     fn alpn<'r>(&self, alpn: Alpn<'r>) -> bool {
@@ -77,7 +41,7 @@ impl TlsServerCtxConfig for TlsServerConfig {
     }
     #[inline]
     fn server_private_key(&self) -> &[u8] {
-        &self.server_private_key
+        self.private_key()
     }
     #[inline]
     fn server_cert_chain(&self) -> &[u8] {
@@ -86,19 +50,22 @@ impl TlsServerCtxConfig for TlsServerConfig {
     #[inline]
     fn server_cert(&self, id: u8) -> &[u8] {
         match id {
-            0 => &self.server_cert,
-            1 => &self.ca_cert,
+            //0 => &self.server_cert,
+            //1 => &self.ca_cert,
+            0 => self.server_crt(),
+            1 => self.ca_cert(),
             _ => unreachable!(),
         }
     }
 }
+*/
 
 /// yTLS Server Blueprint
-pub struct TlsServer {
-    ctx: TlsServerCtx<TlsServerConfig, ytls_rustcrypto::RustCrypto, ThreadRng>,
+pub struct TlsServer<Config, Crypto, Rng> {
+    ctx: TlsServerCtx<Config, Crypto, Rng>,
 }
 
-impl core::fmt::Debug for TlsServer {
+impl<Config, Crypto, Rng> core::fmt::Debug for TlsServer<Config, Crypto, Rng> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> Result<(), core::fmt::Error> {
         write!(f, "TlsServer")
     }
@@ -161,14 +128,16 @@ impl<'r, R: Right> TlsRight for ProxyRight<'r, R> {
     }
 }
 
-impl TlsServer {
+impl<Config, Crypto, Rng> TlsServer<Config, Crypto, Rng>
+where
+    Config: TlsServerCtxConfig,
+    Crypto: CryptoConfig + Clone,
+    Rng: CryptoRng,
+{
     /// Construct new
-    pub fn with_config(config: TlsServerConfig) -> Result<Self, TlsError> {
-        let rng = rand::rng();
-        let crypto_cfg = ytls_rustcrypto::RustCrypto;
-
-        let tls_ctx = TlsServerCtx::with_required(config, crypto_cfg, rng);
-        Ok(Self { ctx: tls_ctx })
+    pub fn with_required(config: Config, crypto: Crypto, rng: Rng) -> Self {
+        let tls_ctx = TlsServerCtx::with_required(config, crypto, rng);
+        Self { ctx: tls_ctx }
     }
     /// Advance the state machine
     #[inline]

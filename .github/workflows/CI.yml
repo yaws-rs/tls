@@ -16,25 +16,24 @@ jobs:
     steps:
       - run: exit 0
 
-# TODO: CryptoRng (rand_core) trait wiring instead of ThreadRng (rand)
-#  build-nostds:
-#    name: Build on no_std target (thumbv7em-none-eabi)
-#    runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        include:
-#          - crate: blueprint-ytls
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: dtolnay/rust-toolchain@master
-#        with:
-#          toolchain: stable
-#          targets: thumbv7em-none-eabi
-#      - uses: taiki-e/install-action@cargo-hack
-#      # No default features build
-#      - name: no_std / parser-builder
-#        run: cargo build -p ${{ matrix.crate }} --target thumbv7em-none-eabi --release --no-defautt-features --features server
-#
+  build-nostds:
+    name: Build on no_std target (thumbv7em-none-eabi)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - crate: blueprint-ytls
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          targets: thumbv7em-none-eabi
+      - uses: taiki-e/install-action@cargo-hack
+      # No default features build
+      - name: no_std / parser-builder
+        run: cargo build -p ${{ matrix.crate }} --target thumbv7em-none-eabi --release --no-default-features --features server
+
   check-test-all:
     name: test, fmt, clippy
     runs-on: ubuntu-latest

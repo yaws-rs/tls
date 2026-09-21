@@ -119,11 +119,6 @@ name = "blueprint-ytls"
 version = "0.0.1"
 dependencies = [
  "blueprint",
- "heapless",
- "pem-rfc7468 0.7.0",
- "pkcs8 0.11.0",
- "rand 0.10.2",
- "ytls-rustcrypto",
  "ytls-server",
  "ytls-traits",
  "ytls-typed",
@@ -654,25 +649,6 @@ dependencies = [
  "ff 0.14.0",
  "rand_core 0.10.1",
  "subtle",
-]
-
-[[package]]
-name = "hash32"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "47d60b12902ba28e2730cd37e95b8c9223af2808df9e902d4df49588d1470606"
-dependencies = [
- "byteorder",
-]
-
-[[package]]
-name = "heapless"
-version = "0.9.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25ba4bd83f9415b58b4ed8dc5714c76e626a105be4646c02630ad730ad3b5aa4"
-dependencies = [
- "hash32",
- "stable_deref_trait",
 ]
 
 [[package]]
@@ -1427,12 +1403,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "stable_deref_trait"
-version = "1.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
-
-[[package]]
 name = "subtle"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1636,6 +1606,7 @@ dependencies = [
  "pem-rfc7468 1.0.0",
  "rand 0.10.2",
  "sec1 0.8.1",
+ "ytls-rustcrypto",
 ]
 
 [[package]]

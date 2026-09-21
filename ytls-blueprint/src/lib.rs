@@ -13,7 +13,8 @@
 //***********************************************
 
 #[cfg(feature = "server")]
-pub use ytls_server::Alpn;
+pub use ytls_server::{Alpn, TlsServerCtxConfig};
+
 pub use ytls_traits::{CryptoConfig, CryptoRng};
 
 //-----------------------------------------------
@@ -40,19 +41,3 @@ pub use ytls_server::*;
 mod position;
 #[doc(inline)]
 pub use position::*;
-
-/*
-mod tls_blueprints;
-pub use tls_blueprints::*;
-
-mod tls_entities;
-pub use tls_entities::*;
-
-*/
-
-/*
-#[cfg(feature = "util")]
-pub mod util;
-
-pub(crate) mod rustls;
-*/

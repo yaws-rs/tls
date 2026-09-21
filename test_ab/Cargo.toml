@@ -21,6 +21,7 @@ rand = { version = "0.10", default-features = false, features = ["thread_rng"] }
 pem-rfc7468 = { version = "1", default-features = false, features = ["alloc"] }
 sec1 = { version = "0.8", default-features = false }
 openssl = { version = "0.10" }
+ytls-rustcrypto = { version = "0.0.3" }
 
 [features]
 default = []
