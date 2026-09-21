@@ -2,7 +2,7 @@
 
 This repository consists of the [Blueprint] & [Orbit] implementations of Transport Layer Security (TLS) part of YAWS to provide the de-coupled [sans-io] networking stack.
 
-![yaws-orbit-instantiation](./assets/instances.jpg)
+![yaws-orbit-instantiation](./assets/instances.png)
 
 ## Options
 
