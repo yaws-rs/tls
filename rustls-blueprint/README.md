@@ -8,4 +8,6 @@ It is currently possible but non-trivial to use Rustls without `std` (where Rust
 
 Rustls no-std+alloc downstream user would be required to address the environmental constraints such as random number generator and global allocator through the use of something like embedded-alloc to provide a global allocator with it's given trade offs and limited scope outside embedded target audience.
 
-See [more](https://github.com/yaws-rs/tls) information.
+In addition some downstream users might not be able to constrain to `Send + Sync` boundary required.
+
+See [more](https://github.com/yaws-rs/tls) information about how everything fits together.
