@@ -17,6 +17,12 @@ The below options are wired up:
 
 Testing and validation is done against OpenSSL
 
+Please generate p256v1 certs before running cargo test:
+
+```ignore
+cd test_certs; make prime256v1
+```
+
 ## Usage
 
 Typically these Orbits are used and configured through YAWS runtimes.
