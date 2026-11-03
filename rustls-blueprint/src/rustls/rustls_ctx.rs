@@ -116,19 +116,39 @@ impl<'ctx> CtxRustls<'ctx> {
                     //go_again = true;
                     TlsPosition::with_send(in_discard, encoded_size)
                 }
-                TlsConnectionState::Server(RustlsConnectionState::TransmitTlsData(t)) => {
-                    /* match t.may_encrypt_app_data() {
-                        Some(w) => // send data
-                    } */
+                TlsConnectionState::Server(RustlsConnectionState::TransmitTlsData(mut t)) => {
+                    let mut pos_new = TlsPosition::with_discard_only(in_discard);
+
+                    if let Some(mut wt) = t.may_encrypt_app_data() {
+                        let (_r_in_len, r_out_len) = r.right_lens();
+                        if r_out_len > 0 {
+                            let right_out_b = r.buf_right_out();
+                            let sent_b = wt
+                                .encrypt(right_out_b, left_out_b)
+                                .map_err(|e| TlsError::RustlsEncrypt(in_discard, e))?;
+                            r.all_sent_right_out();
+                            pos_new = TlsPosition::with_send(in_discard, sent_b)
+                        }
+                    }
                     t.done();
-                    TlsPosition::with_discard_only(in_discard)
+                    pos_new
                 }
-                TlsConnectionState::Client(RustlsConnectionState::TransmitTlsData(t)) => {
-                    /* match t.may_encrypt_app_data() {
-                        Some(w) => // send data
-                    } */
+                TlsConnectionState::Client(RustlsConnectionState::TransmitTlsData(mut t)) => {
+                    let mut pos_new = TlsPosition::with_discard_only(in_discard);
+
+                    if let Some(mut wt) = t.may_encrypt_app_data() {
+                        let (_r_in_len, r_out_len) = r.right_lens();
+                        if r_out_len > 0 {
+                            let right_out_b = r.buf_right_out();
+                            let sent_b = wt
+                                .encrypt(right_out_b, left_out_b)
+                                .map_err(|e| TlsError::RustlsEncrypt(in_discard, e))?;
+                            r.all_sent_right_out();
+                            pos_new = TlsPosition::with_send(in_discard, sent_b)
+                        }
+                    }
                     t.done();
-                    TlsPosition::with_discard_only(in_discard)
+                    pos_new
                 }
                 TlsConnectionState::Client(RustlsConnectionState::WriteTraffic(mut wt)) => {
                     let (_r_in_len, r_out_len) = r.right_lens();
